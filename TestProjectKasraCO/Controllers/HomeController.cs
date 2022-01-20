@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TestProjectKasraCO.App_Data;
+using TestProjectKasraCO.Models;
 
 namespace TestProjectKasraCO.Controllers
 {
@@ -10,7 +12,9 @@ namespace TestProjectKasraCO.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            DatabaseAccess databaseAccess = new DatabaseAccess();
+            List<User> usersList = databaseAccess.UsersList();
+            return View(usersList);
         }
 
         public ActionResult About()
