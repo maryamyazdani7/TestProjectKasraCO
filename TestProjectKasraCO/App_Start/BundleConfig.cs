@@ -19,12 +19,22 @@ namespace TestProjectKasraCO
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+            bundles.Add(new Bundle("~/bundles/bootstrap").Include(
+                      "~/Scripts/bootstrap.bundle.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/KasraStyles").Include(
+                       "~/Content/bootstrap.css",
+                       "~/Content/Plugins/PersianDatePicker/persian-datepicker.min.css",
+                       "~/Content/font-awesome.min.css",
+                      "~/Content/KasraStyles.css"));
+
+            bundles.Add(new Bundle("~/bundles/KasraScripts").Include(
+                "~/Scripts/jquery-ui-1.12.1.min.js",
+                "~/Scripts/Plugins/PersianDatePicker/persian-date.min.js",
+                "~/Scripts/Plugins/PersianDatePicker/persian-datepicker.min.js",
+                       "~/Scripts/inputmask/jquery.inputmask.js",
+                       "~/Scripts/inputmask/inputmask.js",
+                      "~/Scripts/KasraScripts.js"));
         }
     }
 }

@@ -1,31 +1,147 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿
+@{
+    ViewBag.Title = "ترددهای پرسنل";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<div>
+    <div class="panel lobipanel">
+        <div class="panel-heading">
+            <div class="panel-title"><h5>ترددهای پرسنل</h5></div>
+        </div>
+        <div class="panel-body">
+            <button type="button" class="k-btn" data-bs-toggle="modal" data-type="1" data-bs-target="#traffic-insert-edit">درج تردد جدید</button>
+            <div class="mb-2 mt-2 d-flex align-items-center row">
+                <div class="d-inline-block mb-2 col-12 col-md-3">
+                    <select class="form-select required" id="traffic-user-select">
+                        @{
+                            <option value="">انتخاب کاربر...</option>
+                            foreach (var user in Model.UsersList)
+                            {
+                                <option value="@user.Id">@user.FirstName @user.LastName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="d-inline-block mb-2 col-12 col-md-3">
+                    <div class="input-group" dir="ltr">
+                        <a class="calender-btn input-group-text"><i class="fa fa-calendar"></i></a>
+                        <input id="traffic-in-date" class="form-control date-mask persian-calendar" placeholder="زمان ورود">
+                        <a class="input-group-text text-decoration-none" onclick="$('#traffic-in-date').val('')"><i class="fa fa-close text-danger"></i></a>
+                    </div>
+                </div>
+                <div class="d-inline-block mb-2 col-12 col-md-3">
+                    <div class="input-group" dir="ltr">
+                        <a class="calender-btn input-group-text"><i class="fa fa-calendar"></i></a>
+                        <input id="traffic-out-date" class="form-control date-mask persian-calendar" value="" placeholder="زمان خروج">
+                        <a class="input-group-text text-decoration-none" onclick="$('#traffic-out-date').val('')"><i class="fa fa-close text-danger"></i></a>
+                    </div>
+                </div>
+                <a id="traffic-search-btn" class="d-inline-block mb-2 k-icon-btn"><i class="fa fa-search"></i></a>
+            </div>
+            <table id="traffic-List">
+                <thead>
+                    <tr>
+                        <th class="text-center"><i class="fa fa-cogs"></i></th>
+                        <th class="text-center">کد</th>
+                        <th class="text-center">زمان ثبت</th>
+                        <th class="text-center">نام</th>
+                        <th class="text-center">زمان ورود</th>
+                        <th class="text-center">زمان خروج</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.TrafficList.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="6">
+                                    <i class="fa fa-folder-o fa-3x"></i>
+                                    <p>موردی یافت نشد!</p>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var traffic in Model.TrafficList)
+                            {
+                                <tr id="traffic-@traffic.Id">
+                                    <td>
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle k-cog-btn" data-bs-toggle="dropdown"><i class="fa fa-cog"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end text-end">
+                                                <a class="dropdown-item" data-id="@traffic.Id" data-bs-toggle="modal" data-bs-target="#traffic-insert-edit"><i class="fa fa-edit"></i> ویرایش</a>
+                                                <a class="dropdown-item" onclick="TrafficDelete(@traffic.Id)"><i class="fa fa-window-close-o"></i> حذف</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><p class="m-0">@traffic.Id</p></td>
+                                    <td><p class="m-0">@traffic.RegDate</p></td>
+                                    <td><p class="m-0">@traffic.UserName</p></td>
+                                    <td><p class="m-0">@(traffic.OutDate != null ? traffic.OutDate : "-")</p></td>
+                                    <td><p class="m-0">@(traffic.InDate != null ? traffic.InDate : "-")</p></td>
+                                </tr>
+                            }
+                        }
+                    }
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+
+                </tbody>
+                <tfoot class="d-none">
+                    <tr>
+                        <td colspan="6">
+                            <div class="load-more" onclick="loadMore_TrafficList();">
+                                <i class="fa fa-caret-down"></i>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+</div>
+<div id="traffic-insert-edit" class="modal fade in" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">درج تردد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-2">
+                        <label for="user-select" class="form-label">کاربر</label>
+                        <select class="form-select required" id="user-select">
+                            @{
+                                <option value="">انتخاب...</option>
+                                foreach (var user in Model.UsersList)
+                                {
+                                    <option value="@user.Id">@user.FirstName @user.LastName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label for="enter-date" class="form-label">زمان ورود</label>
+                        <div class="input-group" dir="ltr">
+                            <a class="calender-btn input-group-text"><i class="fa fa-calendar"></i></a>
+                            <input id="enter-date" class="form-control persian-calendar required date-mask" placeholder="زمان ورود">
+                            <a class="input-group-text text-decoration-none" onclick="$('#enter-date').val('')"><i class="fa fa-close text-danger"></i></a>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="out-date" class="form-label">زمان خروج</label>
+                        <div class="input-group" dir="ltr">
+                            <a class="calender-btn input-group-text"><i class="fa fa-calendar"></i></a>
+                            <input id="out-date" class="form-control required persian-calendar date-mask" placeholder="زمان خروج">
+                            <a class="input-group-text text-decoration-none" onclick="$('#out-date').val('')"><i class="fa fa-close text-danger"></i></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="k-btn k-btn-second" data-bs-dismiss="modal">انصراف</button>
+                <button type="button" class="k-btn" onclick="TrafficInsertEdit()">تایید</button>
+            </div>
+        </div>
     </div>
 </div>

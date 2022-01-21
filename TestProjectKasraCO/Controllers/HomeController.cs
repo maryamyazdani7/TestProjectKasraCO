@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using TestProjectKasraCO.App_Data;
 using TestProjectKasraCO.Models;
@@ -14,7 +11,12 @@ namespace TestProjectKasraCO.Controllers
         {
             DatabaseAccess databaseAccess = new DatabaseAccess();
             List<User> usersList = databaseAccess.UsersList();
-            return View(usersList);
+            List<TrafficViewModel> trafficList = databaseAccess.TrafficList();
+            IndexPageViewModel indexPageView = new IndexPageViewModel();
+            indexPageView.UsersList = usersList;
+            indexPageView.TrafficList = trafficList;
+
+            return View(indexPageView);
         }
 
         public ActionResult About()
