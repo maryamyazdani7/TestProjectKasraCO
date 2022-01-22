@@ -15,6 +15,23 @@
     <div class="container body-content">
         @RenderBody()
     </div>
+    <div id="are-you-sure" class="modal fade in">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>آیا مطمئن هستید؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="k-btn yes-btn">بله</button>
+                    <button type="button" class="k-btn k-btn-second" data-bs-dismiss="modal">خیر</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="snackbar"></div>
     <div class="loader-container d-none"><div class="loader"></div></div>
     @Scripts.Render("~/bundles/jquery")

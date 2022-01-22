@@ -91,5 +91,19 @@ namespace TestProjectKasraCO.Controllers
             catch (Exception e) { return (null); }
         }
 
+        [Route("TrafficDetail")]
+        [HttpPost]
+        public TrafficViewModel TrafficDetail()
+        {
+            try
+            {
+                DatabaseAccess databaseAccess = new DatabaseAccess();
+                return (databaseAccess.TrafficDetail(Convert.ToInt32(HttpContext.Current.Request.Form["Id"])));
+
+            }
+            catch (Exception e) { return (null); }
+        }
+
+
     }
 }

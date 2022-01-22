@@ -77,14 +77,12 @@
                                     <td><p class="m-0">@traffic.Id</p></td>
                                     <td><p class="m-0">@traffic.RegDate</p></td>
                                     <td><p class="m-0">@traffic.UserName</p></td>
-                                    <td><p class="m-0">@(traffic.OutDate != null ? traffic.OutDate : "-")</p></td>
                                     <td><p class="m-0">@(traffic.InDate != null ? traffic.InDate : "-")</p></td>
+                                    <td><p class="m-0">@(traffic.OutDate != null ? traffic.OutDate : "-")</p></td>
                                 </tr>
                             }
                         }
                     }
-
-
                 </tbody>
                 <tfoot class="d-none">
                     <tr>
@@ -139,8 +137,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="k-btn k-btn-second" data-bs-dismiss="modal">انصراف</button>
                 <button type="button" class="k-btn" onclick="TrafficInsertEdit()">تایید</button>
+                <button type="button" class="k-btn k-btn-second" data-bs-dismiss="modal">انصراف</button>
             </div>
         </div>
     </div>

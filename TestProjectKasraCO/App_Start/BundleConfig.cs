@@ -26,7 +26,7 @@ namespace TestProjectKasraCO
                        "~/Content/bootstrap.css",
                        "~/Content/Plugins/PersianDatePicker/persian-datepicker.min.css",
                        "~/Content/font-awesome.min.css",
-                      "~/Content/KasraStyles.css"));
+                      "~/Content/KasraStyle/KasraStyles.css"));
 
             bundles.Add(new Bundle("~/bundles/KasraScripts").Include(
                 "~/Scripts/jquery-ui-1.12.1.min.js",
@@ -34,7 +34,7 @@ namespace TestProjectKasraCO
                 "~/Scripts/Plugins/PersianDatePicker/persian-datepicker.min.js",
                        "~/Scripts/inputmask/jquery.inputmask.js",
                        "~/Scripts/inputmask/inputmask.js",
-                      "~/Scripts/KasraScripts.js"));
+                      "~/Scripts/KasraScript/KasraScripts.js"));
         }
     }
 }

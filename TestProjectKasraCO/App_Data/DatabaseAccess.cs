@@ -143,6 +143,31 @@ namespace TestProjectKasraCO.App_Data
             catch (Exception ex) { throw ex; }
             finally { sqlConnection.Close(); }
         }
+         public TrafficViewModel TrafficDetail(Int32 Id)
+        {
+            try
+            {
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.CommandText = "select * from dbo.fnTrafficDetail("+ Id +")";
+
+                sqlConnection.Open();
+                dataTable = new DataTable();
+                sqlDataAdapter.Fill(dataTable);
+
+                return (dataTable.AsEnumerable()
+                      .Select(x => new TrafficViewModel
+                      {
+                          Id = x.Field<Int32>("Id"),
+                          RegDate = PersianDate.ConvertDate.ToFa(x.Field<DateTime>("RegDate")),
+                          UserId = x.Field<Int32>("UserId"),
+                          UserName = x.Field<string>("UserName"),
+                          OutDate = (x.Field<DateTime?>("OutDate") != null ? PersianDate.ConvertDate.ToFaWithTime(x.Field<DateTime>("OutDate")) : null),
+                          InDate = (x.Field<DateTime?>("InDate") != null ? PersianDate.ConvertDate.ToFaWithTime(x.Field<DateTime>("InDate")) : null)
+                      }).FirstOrDefault());
+            }
+            catch (Exception ex) { throw ex; }
+            finally { sqlConnection.Close(); }
+        }
 
     }
 }
