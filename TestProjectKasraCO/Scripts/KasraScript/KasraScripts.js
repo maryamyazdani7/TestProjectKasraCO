@@ -1,9 +1,23 @@
-﻿$(function () {   
+﻿$(function () { 
+    
     //#region PersianDatePicker
     $('.calender-btn').on('click', function () {
         $(this).parent().find('.persian-calendar').focus();
     }); 
-    $(".persian-calendar").persianDatepicker({
+    $("#traffic-page").find(".persian-calendar").persianDatepicker({
+        altField: '#normalAlt',
+        altFormat: 'LLLL',
+        initialValue: true,
+        initialValueType: 'persian',
+        observer: true,
+        format: 'YYYY/MM/DD HH:mm',
+        timePicker: {enabled: false},
+        onSelect: function (event) {
+            $(this.model.inputElement).val(toEnNumber(this.model.PersianDate.date(event).format(this.model.options.format)).replace(/,/g, ''));
+            this.model.options.toolbox.todayButton.onToday(this.model);
+        }
+    });
+    $("#traffic-insert-edit").find(".persian-calendar").persianDatepicker({
         altField: '#normalAlt',
         altFormat: 'LLLL',
         initialValue: true,
@@ -13,8 +27,8 @@
         timePicker: {
             enabled: true,
             meridiem: {
-            enabled: true
-        }
+                enabled: true
+            }
         },
         onSelect: function (event) {
             $(this.model.inputElement).val(toEnNumber(this.model.PersianDate.date(event).format(this.model.options.format)).replace(/,/g, ''));
@@ -22,7 +36,11 @@
         }
     });
     $(".persian-calendar").val("");
-    $('input.date-mask').inputmask("datetime", {
+    $("#traffic-page").find('input.date-mask').inputmask("datetime", {
+        mask: "9999/99/99",
+        placeholder: "----/--/--"
+    });
+    $("#traffic-insert-edit").find('input.date-mask').inputmask("datetime", {
         mask: "9999/99/99 99:99",
         placeholder: "----/--/-- --:--"
     });
@@ -38,6 +56,8 @@
     $('#traffic-search-btn').click(function () { TrafficSearch($('#traffic-user-select').val(), $('#traffic-out-date').val(), $('#traffic-in-date').val()); })
     $('#traffic-user-select').on('change', function () { TrafficSearch($('#traffic-user-select').val(), $('#traffic-out-date').val(), $('#traffic-in-date').val()); });
 })
+
+//#region General
 function callApi(api, formData, doneCallback, failCallback) {
     $('.loader-container').removeClass('d-none');
     $.ajax({
@@ -77,6 +97,8 @@ function showMsg(textMsg) {
     $("#snackbar").text(textMsg);
     setTimeout(function () { $("#snackbar").removeClass("show"); }, 3000);
 }
+//#endregion
+
 function TrafficInsertEdit() {
     if (!checkTrafficInsertEditRequired()) return;
     var formData = new FormData();
@@ -99,6 +121,7 @@ function TrafficInsertEdit() {
             console.log("errorData: "+errorData);
     })
 }
+
 function checkTrafficInsertEditRequired() {
     var inputIds = "";
    
@@ -163,6 +186,16 @@ function checkTrafficInsertEditRequired() {
     return true;
 }
 
+function DateTimeValidation(date, time) {
+    let datePattern = /^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|([1-2][0-9])|(0[1-9]))))$/;
+    let dateValidation = datePattern.test(date);
+
+    let timePattern = /^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$/i;
+    let timeValidation = timePattern.test(time);
+    return [dateValidation, timeValidation]
+
+}
+
 function TrafficDelete(Id) {
     $('#are-you-sure').find('modal-title').text('حذف تردد');
     $('#are-you-sure').modal('show');
@@ -198,7 +231,7 @@ function TrafficSearch(userId, outDate, enterDate) {
                     '<div class="dropdown-menu dropdown-menu-end text-end"><a class="dropdown-item" data-id="' + traffic.Id + '" data-bs-toggle="modal" data-bs-target="#traffic-insert-edit"><i class="fa fa-edit"></i> ویرایش</a>' +
                     '<a class="dropdown-item" onclick="TrafficDelete(' + traffic.Id + ')"><i class="fa fa-window-close-o"></i> حذف</a></div></div></td>';
                 colData = '<td><p class="m-0">' + traffic.Id + '</p></td><td><p class="m-0">' + traffic.RegDate + '</p></td><td><p class="m-0">' + traffic.UserName +
-                    '</p></td><td><p class="m-0">' + (traffic.InDate != null ? traffic.InDate : "-") + '</p></td><td><p class="m-0">' + (traffic.OutDate != null ? traffic.OutDate : "-") + '</p></td></tr>';
+                    '</p></td><td><p class="m-0" dir="ltr">' + (traffic.InDate != null ? traffic.InDate : "-") + '</p></td><td><p class="m-0" dir="ltr">' + (traffic.OutDate != null ? traffic.OutDate : "-") + '</p></td></tr>';
                 row = operation + colData;
                 $('#traffic-List').find('tbody').append(row);
             });
@@ -222,14 +255,4 @@ function TrafficDetail(Id) {
         showMsg("خطا در انجام عملیات!");
             console.log("errorData: " + errorData);
         })
-}
-
-function DateTimeValidation(date, time) {
-    let datePattern = /^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|([1-2][0-9])|(0[1-9]))))$/;
-    let dateValidation = datePattern.test(date);
-
-    let timePattern = /^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$/i;
-    let timeValidation = timePattern.test(time);
-    return [dateValidation, timeValidation]
-
 }

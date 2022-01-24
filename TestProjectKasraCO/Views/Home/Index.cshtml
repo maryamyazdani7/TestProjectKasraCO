@@ -3,7 +3,7 @@
     ViewBag.Title = "ترددهای پرسنل";
 }
 
-<div>
+<div id="traffic-page">
     <div class="panel lobipanel">
         <div class="panel-heading">
             <div class="panel-title"><h5>ترددهای پرسنل</h5></div>
@@ -77,8 +77,8 @@
                                     <td><p class="m-0">@traffic.Id</p></td>
                                     <td><p class="m-0">@traffic.RegDate</p></td>
                                     <td><p class="m-0">@traffic.UserName</p></td>
-                                    <td><p class="m-0">@(traffic.InDate != null ? traffic.InDate : "-")</p></td>
-                                    <td><p class="m-0">@(traffic.OutDate != null ? traffic.OutDate : "-")</p></td>
+                                    <td><p class="m-0" dir="ltr">@(traffic.InDate != null ? traffic.InDate : "-")</p></td>
+                                    <td><p class="m-0" dir="ltr">@(traffic.OutDate != null ? traffic.OutDate : "-")</p></td>
                                 </tr>
                             }
                         }
@@ -97,7 +97,7 @@
         </div>
     </div>
 </div>
-<div id="traffic-insert-edit" class="modal fade in" tabindex="-1">
+<div id="traffic-insert-edit" class="modal fade in" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
